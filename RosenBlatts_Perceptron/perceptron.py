@@ -7,7 +7,7 @@ class RosenBlott_Perceptron():
                  learning_rate: float = 1.0, training_length: int = 0):
         '''
         Here we initialize the RosenBlott Perceptron, here's a description of what is encoded
-        in the Perceptron
+        in the Perceptron (Check Neural Networks and Learning Machines by Haykin for more information)
 
         weights_vector: a 1*n numpy vector which of the form [b, w_{1}, ...., w_{n-1}], we initialize it 
         to be the 0 vector, since this is the case in the convergence theorem if not already set
@@ -16,12 +16,13 @@ class RosenBlott_Perceptron():
 
         input_length: {n-1} (integer) which we determine
 
-        learning_rate: 
+        learning_rate: (float) value which gives the time-step for gradient descent
+
+        training_length: (int) the number of training_examples in the dataset
         '''
 
         self.input_length = input_length
-        self.learning_rate = 1.0
-        #determine if the weights_vector exists or not
+        self.learning_rate = learning_rate
         self.weights_vector = weights_vector
         self.bias = self.weights_vector[0]
         self.training_index = 0
@@ -30,7 +31,10 @@ class RosenBlott_Perceptron():
 
     def process_training_vector(self, training_vector: np.ndarray) -> np.ndarray:
         '''
+        Processes our training vector by pre-concatenating a 1, so that w*x outputs 
+        a linear function (some preprocessing that must be done with each example trainign_vector)
         '''
+
         training_vector = np.concatenate([np.array([1]), training_vector])
         return training_vector
 
@@ -51,16 +55,22 @@ class RosenBlott_Perceptron():
 
 
     def class_prediction(self, result: float) -> int:
-        #in this case let 0 denote the positive class, and 1 denote the negative class
+        '''
+        Given the result of (w^{t}x + b), spits out a class prediction of either 0 or 1
+        '''
+
         if result >= 0:
             return 0
         elif result < 0:
             return 1 
         
     
-    def misclassification(self, training_example) -> bool:
+    def misclassification(self, training_example: tuple) -> bool:
         '''
+        A function given a training_example from the dataset determines if it was 
+        correctly classified or not.
         '''
+
         training_vector = training_example[0]
         training_annotation = training_example[1]
         result = self.forward(training_example)
@@ -79,14 +89,20 @@ class RosenBlott_Perceptron():
 
     def print_weights(self) -> np.ndarray:
         '''
+        prints out the weight vector to the console for visualization and additionally
+        returns the weights vector for debugging
         '''
+
         print(self.weights_vector)
         return self.weights_vector
 
 
     def train_on_example(self, training_example: tuple) -> None:
         '''
+        This function takes in a training_example and adjusts the weights_vector based on whether or not
+        it misclassifies the example.
         '''
+
         training_vector = training_example[0]
         training_annotation = training_example[1]
         result = self.forward(training_example)
@@ -110,7 +126,9 @@ class RosenBlott_Perceptron():
 
     def train_on_dataset(self, training_dataset: tuple):
         '''
+        Trains the Perceptron on the entirety of the training_dataset
         '''
+
         for index in range(len(training_dataset[0])):
             training_vector = training_dataset[0][index]
             training_annotation = training_dataset[1][index]
@@ -121,7 +139,12 @@ class RosenBlott_Perceptron():
     
     def evaluate_performance(self, test_dataset: tuple) -> float:
         '''
+        Evaluates the performance of the machine learning model on the test_dataset. Returns the 
+        accuracy by calculating the number of missclassified occurences in the dataset and prints 
+        out the results in a string.
         '''
+
+        #Loop through the dataset and calculates the number of missclassifications
         num_wrong = 0
         for index in range(len(test_dataset[0])):
             training_vector = test_dataset[0][index]

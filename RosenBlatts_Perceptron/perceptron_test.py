@@ -7,6 +7,7 @@ import time
 
 def test_forward_1():
     '''
+    testes the dot product capability of the perceptron class
     '''
 
     training_example = (np.array([1,1]), 0)
@@ -20,6 +21,7 @@ def test_forward_1():
 
 def test_forward_2():
     '''
+    tests the dot product capability of the perceptron class
     '''
 
     training_example = (np.array([1,1]), 0)
@@ -32,7 +34,9 @@ def test_forward_2():
 
 def vector_test():
     '''
+    tests vector processing mumbo jumbo in numpy
     '''
+
     v1 = np.array([0, 0, 0])
     v2 = np.array([1, 2, 1])
     result = np.add(v1, (-1.0)*v2)
@@ -43,7 +47,9 @@ def vector_test():
 
 def test_process_training_vector():
     '''
+    tests that the perceptron preprocesses vectors correctly and there are no errors
     '''
+
     v1 = np.array([1, 1])
     perceptron = RosenBlott_Perceptron(2, np.array([0,0,0]), learning_rate=1.0, training_length=2000)
     v1 = perceptron.process_training_vector(v1)
@@ -55,6 +61,8 @@ def test_process_training_vector():
 
 def test_training_on_dataset():
     '''
+    Here we test how the perceptron works when training on a dataset through manually working through
+    the steps which it takes for the hyperplane to be trained.
     '''
 
     #First let's create an example problem who's solution hyperplane should be y=x with the learning_rate
@@ -92,7 +100,9 @@ def test_training_on_dataset():
 
 def test_misclassification():
     '''
+    testing the perceptrons training capabilities
     '''
+
      #First let's create an example problem who's solution hyperplane should be y=x with the learning_rate
     # of 1.0
     training_vectors = np.array([
@@ -144,7 +154,9 @@ def test_misclassification():
 
 def test_misclassification_2():
     '''
+    tests the perceptrons training capabilities
     '''
+
      #First let's create an example problem who's solution hyperplane should be y=x with the learning_rate
     # of 1.0
     training_vectors = np.array([
@@ -191,7 +203,9 @@ def test_misclassification_2():
 
 def test_misclassification_3():
     '''
+    tests the perceptrons training capabilities
     '''
+
      #First let's create an example problem who's solution hyperplane should be y=x with the learning_rate
     # of 1.0
     training_vectors = np.array([
@@ -237,7 +251,9 @@ def test_misclassification_3():
 
 def test_misclassification_4():
     '''
+    tests the perceptrons training capabilities
     '''
+
      #First let's create an example problem who's solution hyperplane should be y=x with the learning_rate
     # of 1.0
     training_vectors = np.array([
