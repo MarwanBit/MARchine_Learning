@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class SVM_Linearly_NonSeperable():
 
 
@@ -43,6 +44,12 @@ class SVM_Linearly_NonSeperable():
         training_annotations = self.training_data[1]
 
         return (training_vectors[index], training_annotations[index])
+    
+
+    def print_weight_vector(self) -> None:
+        '''
+        '''
+        print(self.w)
     
 
     def calc_sigma_i(self, index: int) -> float:
@@ -101,6 +108,25 @@ class SVM_Linearly_NonSeperable():
         print(f"The Cost of the Current Decision Boundary is {loss:.2f}".format(loss))
         return loss
     
+    
+    def compute_res(self, index: int) -> int:
+        '''
+        '''
+        training_vector, training_annotation = self.get_training_example_i(index)
+        result = self.w.dot(training_vector) + self.b
+        return result
+
+
+    def pred_class(self, index: int) -> int:
+        '''
+        '''
+        training_vector, training_annotation = self.get_training_example_i(index)
+        result = self.w.dot(training_vector) + self.b
+        if (result)  >= 0:
+            return -1
+        else:
+            return 1
+
 
     def calc_accuracy(self):
         '''
@@ -109,13 +135,8 @@ class SVM_Linearly_NonSeperable():
         num_wrong_classified = 0
         total_num = len(self.training_data[0])
         for index in range(len(self.training_data[0])):
-            sigma_i = self.calc_sigma_i(index)
-            #we can use the value of sigma_i to determine if our model missclassifies or not
-            if sigma_i == 0:
-                #do nothing
-                pass
-            else:
-                num_wrong_classified += 1 
+            if self.pred_class(index) != self.get_training_example_i(index)[1]:
+                num_wrong_classified += 1
 
         #now let's return the accuracy
         accuracy = float(total_num - num_wrong_classified) / float(total_num)
