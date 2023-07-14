@@ -1,0 +1,47 @@
+from layer import Layer 
+import numpy as np
+
+class Neuron():
+
+    def __init__(self, prev_layer: Layer, weights: np.ndarray, activation_function: function, activation_function_prime: function, 
+                 num: int, layer: int, learning_rate: float):
+        '''
+        Each Neuron has M_(l-1) weights where M_l-1 is the number of neurons/ inputs in the previous layer.
+        The weights are of the form w_{j, i}^{l-1} (n) where the ^ is the superscript, we read this as the weight connecting
+        output i/ neuron i in layer l-1 to neuron j in layer l, which is the current_layer.
+
+        So we may write out the weights for our neuron j in layer l as ....
+
+        w_{j, 0}^{l-1}, ....., w_{j, M_l-1}^{l-1} (n)
+
+        So we have the local field v_{j}^{l}(n) = \sum_{0 <= k <= m_{l-1}} w_{j,k}^{l-1}(n)*y_{k}^{l-1}(n)
+
+        Each one of these neurons outputs some v_{j}^{l}(n) which we than pass through the activation function to get....
+
+        phi_{j}^{l} (v_{j}^{l}(n) ) = y_{j}^{l}(n) which is the activation / output of our neural network
+        '''
+        #can pass prev_weights as none if input layer (we need a special case for the input layer)
+        self.prev_weights = weights
+        self.activation_function = activation_function
+        self.activation_function_prime = activation_function_prime
+        #This is the "index of the neuron"
+        self.num = num
+        self.layer = layer
+        self.lr = learning_rate
+        #save a var for the local field for now, so we can save it for later, similarly for the 
+        #
+        self.local_field = None
+
+
+    def compute_local_field(self, input: np.ndarray) -> np.ndarray:
+        '''
+        input should be an m_l-1 + 1 * 1 dimensional vector which we multiply by our  m_l-1 + 1 * 1 dimensional weights 
+        vector to computer the local field, remembering this output for the forward propogation
+        '''
+        raise NotImplementedError
+    
+    
+    def output(self, input: np.ndarray):
+        '''
+        '''
+        raise NotImplementedError
