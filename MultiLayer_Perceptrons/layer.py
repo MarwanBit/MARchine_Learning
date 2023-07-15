@@ -52,12 +52,11 @@ class DenseLayer(BaseLayer):
         return self.output 
     
 
-    def backpropagation(self, output_error: np.ndarray, learning_rate = None):
+    def backpropagation(self, output_error: np.ndarray, learning_rate = 0.01):
         '''
         '''
         #If no learning rate is passed than we use the one provided during initalization
-        if learning_rate:
-            self.lr = learning_rate
+        #check this stuff 
         weight_error = np.dot(self.input.T, output_error)
         bias_error = output_error
         input_error = np.dot(output_error, self.weights.T)
@@ -84,5 +83,5 @@ class ActivationLayer(BaseLayer):
         return self.output
     
 
-    def backpropagation(self, output_error, learning_rate):
+    def backpropagation(self, output_error, learning_rate = 0.01):
         return output_error * self.activation_prime(self.input)

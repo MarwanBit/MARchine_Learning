@@ -1,4 +1,5 @@
 import layer as Layer 
+import numpy as np
 
 class Network():
     def __init__(self, loss_func, loss_func_prime):
@@ -17,11 +18,19 @@ class Network():
         '''
         '''
         raise NotImplementedError
+    
+    def forward(self, input_vector: np.ndarray):
+        '''
+        '''
+        output = input_vector
+        for layer in self.layers:
+            output = layer.forward(output)
+        return output
 
-    def train(self, input_vector, label_vector):
+    def train(self, input_vector: np.ndarray, label_vector):
         '''
         '''
-        output = input
+        output = input_vector
         for layer in self.layers:
             output = layer.forward(output)
         res = output
