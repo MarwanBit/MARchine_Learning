@@ -57,11 +57,28 @@ class DenseLayer(BaseLayer):
         '''
         #If no learning rate is passed than we use the one provided during initalization
         #check this stuff 
-        weight_error = np.dot(self.input.T, output_error)
+        '''
+        print("dimensions of output error:", output_error.shape)
+        print("output error: ", output_error)
+        print("self.input: ", self.input)
+        print("dimensions of self.input: ", self.input.shape)
+        '''
+        weight_error = np.matmul(output_error, self.input.T)
+        '''
+        print("Weights_error: ", weight_error)
+        print("Weights_error.T: ", weight_error.T)
+        print("Weights_error.T shape: ", weight_error.T.shape)
+        print("Weights_error.shape: ", weight_error.shape)
+        print("weights_error: ", weight_error)
+        print("Weights: ", self.weights)
+        print("Weights.shape: ", self.weights.shape)
+        '''
+
         bias_error = output_error
-        input_error = np.dot(output_error, self.weights.T)
+        # print("dimensions of weights.T: ", self.weights.T.shape)
+        input_error = np.matmul(self.weights.T, output_error)
         #updates the weights
-        self.weights -= self.lr*weight_error 
+        self.weights = self.weights + self.lr*weight_error
         self.bias -= self.lr* bias_error
         #Pass dE/dX as the de/DY for the next layer
         return input_error
@@ -84,4 +101,9 @@ class ActivationLayer(BaseLayer):
     
 
     def backpropagation(self, output_error, learning_rate = 0.01):
+        '''
+        print("heres the result of the activation layer: (output error) ", output_error)
+        print("heres the result of the activation layer (activation prime(input)): ", self.activation_prime(self.input))
+        print("here's the full result:", output_error * self.activation_prime(self.input))
+        '''
         return output_error * self.activation_prime(self.input)
