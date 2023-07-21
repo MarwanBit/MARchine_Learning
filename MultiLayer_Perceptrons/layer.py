@@ -23,7 +23,8 @@ class BaseLayer():
 
 
 class DenseLayer(BaseLayer):
-    def __init__(self, input_size: int, output_size: int, layer_num: int,  learning_rate: float = 0.01, input: np.ndarray = None):
+    def __init__(self, input_size: int, output_size: int, layer_num: int, activation_function, activation_function_prime,
+                   learning_rate: float = 0.01, input: np.ndarray = None):
         '''
         We initially start by creating a Weights matrix and bias matrix
 
@@ -41,6 +42,9 @@ class DenseLayer(BaseLayer):
         self.weights = np.random.rand(output_size, input_size)
         self.bias = np.random.rand(output_size, 1)
         self.lr = learning_rate
+        self.local_field = None
+        self.activation_function = activation_function 
+        self.activation_function_prime = activation_function_prime
 
 
     def forward(self, input: np.ndarray):
@@ -48,7 +52,8 @@ class DenseLayer(BaseLayer):
         Here we perform forward propagation using the rule that Y^(l+1)(n) = W^(l+1)(n)Y^(l)(n) + b^(l+1)(n)
         '''
         self.input = input
-        self.output = np.matmul(self.weights,self.input) + self.bias 
+        self.local_field = np.matmul(self.weights, self.input) + self.bias
+        self.output = self.activation_function(self.local_field) 
         return self.output 
     
 
@@ -63,7 +68,8 @@ class DenseLayer(BaseLayer):
         print("self.input: ", self.input)
         print("dimensions of self.input: ", self.input.shape)
         '''
-        weight_error = np.matmul(output_error, self.input.T)
+        weight_error = np.multiply(output_error.T, self.activation_function_prime(self.local_field))
+        weight_error = np.matmul(weight_error, self.input.T)
         '''
         print("Weights_error: ", weight_error)
         print("Weights_error.T: ", weight_error.T)
@@ -74,36 +80,15 @@ class DenseLayer(BaseLayer):
         print("Weights.shape: ", self.weights.shape)
         '''
 
-        bias_error = output_error
+        bias_error = np.multiply(output_error.T, self.activation_function_prime(self.local_field))
         # print("dimensions of weights.T: ", self.weights.T.shape)
-        input_error = np.matmul(self.weights.T, output_error)
+        input_error = np.multiply(output_error, self.activation_function_prime(self.local_field).T)
+        input_error = np.matmul(input_error, self.weights)
         #updates the weights
-        self.weights = self.weights + self.lr*weight_error
+        self.weights -= self.lr*weight_error
         self.bias -= self.lr* bias_error
         #Pass dE/dX as the de/DY for the next layer
         return input_error
     
 
-class ActivationLayer(BaseLayer):
-    def __init__(self, activation, activation_prime):
-        '''
-        '''
-        self.activation = activation
-        self.activation_prime = activation_prime
 
-
-    def forward(self, input: np.ndarray):
-        '''
-        '''
-        self.input = input 
-        self.output = self.activation(input)
-        return self.output
-    
-
-    def backpropagation(self, output_error, learning_rate = 0.01):
-        '''
-        print("heres the result of the activation layer: (output error) ", output_error)
-        print("heres the result of the activation layer (activation prime(input)): ", self.activation_prime(self.input))
-        print("here's the full result:", output_error * self.activation_prime(self.input))
-        '''
-        return output_error * self.activation_prime(self.input)
