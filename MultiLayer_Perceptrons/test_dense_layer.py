@@ -67,11 +67,16 @@ def neural_network_test_1():
     nn = Network(activation_functions.mse, activation_functions.mse_prime)
     nn.addLayer(DenseLayer(2, 2, 1, activation_functions.tanh, activation_functions.tanh_prime))
     nn.addLayer(DenseLayer(2, 1, 2, activation_functions.tanh, activation_functions.tanh_prime))
-    for i in range(10000):
+    for i in range(1000):
         for i in range(len(X_xor)):
             training_vector, label_vector = X_xor[i], y_xor[i]
             nn.train(training_vector, label_vector)
             nn.evaluate(training_vector, label_vector)
+    
+    #Evaluate performance
+    for i in range(len(X_xor)):
+        training_vector, label_vector = X_xor[i], y_xor[i]
+        nn.evaluate(training_vector, label_vector)
 
 
 
