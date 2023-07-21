@@ -62,26 +62,9 @@ class DenseLayer(BaseLayer):
         '''
         #If no learning rate is passed than we use the one provided during initalization
         #check this stuff 
-        '''
-        print("dimensions of output error:", output_error.shape)
-        print("output error: ", output_error)
-        print("self.input: ", self.input)
-        print("dimensions of self.input: ", self.input.shape)
-        '''
         weight_error = np.multiply(output_error.T, self.activation_function_prime(self.local_field))
         weight_error = np.matmul(weight_error, self.input.T)
-        '''
-        print("Weights_error: ", weight_error)
-        print("Weights_error.T: ", weight_error.T)
-        print("Weights_error.T shape: ", weight_error.T.shape)
-        print("Weights_error.shape: ", weight_error.shape)
-        print("weights_error: ", weight_error)
-        print("Weights: ", self.weights)
-        print("Weights.shape: ", self.weights.shape)
-        '''
-
         bias_error = np.multiply(output_error.T, self.activation_function_prime(self.local_field))
-        # print("dimensions of weights.T: ", self.weights.T.shape)
         input_error = np.multiply(output_error, self.activation_function_prime(self.local_field).T)
         input_error = np.matmul(input_error, self.weights)
         #updates the weights

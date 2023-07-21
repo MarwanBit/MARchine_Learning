@@ -63,5 +63,6 @@ class Network():
         '''
         '''
         res = self.forward(input_vector)
+        print("error on current example: ", self.loss_func(res, label_vector))
         print("res: ", res)
         print("label_vector: ", label_vector)
