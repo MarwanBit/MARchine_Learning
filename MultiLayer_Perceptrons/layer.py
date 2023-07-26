@@ -62,11 +62,11 @@ class DenseLayer(BaseLayer):
         '''
         #If no learning rate is passed than we use the one provided during initalization
         #check this stuff 
-        print("output_error.T shape, ", output_error.T.shape)
-        print("self.activation_function_prime shape:, ", self.activation_function_prime(self.local_field).shape)
+        #print("output_error.T shape, ", output_error.T.shape)
+        #print("self.activation_function_prime shape:, ", self.activation_function_prime(self.local_field).shape)
         weight_error = np.multiply(output_error.T, self.activation_function_prime(self.local_field))
-        print("weight error shape: ", weight_error.shape)
-        print("self.input.T shape, ", self.input.T.shape)
+        #print("weight error shape: ", weight_error.shape)
+        #print("self.input.T shape, ", self.input.T.shape)
         weight_error = np.matmul(weight_error, self.input.T)
         bias_error = np.multiply(output_error.T, self.activation_function_prime(self.local_field))
         input_error = np.multiply(output_error, self.activation_function_prime(self.local_field).T)
