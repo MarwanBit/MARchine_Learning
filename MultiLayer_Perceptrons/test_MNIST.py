@@ -4,6 +4,7 @@ from network import Network
 import activation_functions
 from keras.datasets import mnist
 import random
+from general_dense_layer import General_dense_layer
 
 
 #Load the MNIST dataset 
@@ -39,10 +40,10 @@ def MNIST_forward_test():
     '''
     
     #Create the Neural network
-    nn = Network(activation_functions.mse, activation_functions.mse_prime)
+    nn = Network(activation_functions.cross_entropy, activation_functions.cross_entropy_prime)
     nn.addLayer(DenseLayer(784, 392, 1, activation_functions.tanh, activation_functions.tanh_prime))
     nn.addLayer(DenseLayer(392, 196, 2, activation_functions.tanh, activation_functions.tanh_prime))
-    nn.addLayer(DenseLayer(196, 10, 2, activation_functions.softmax, activation_functions.soft_max_prime))
+    nn.addLayer(General_dense_layer(196, 10, 2, activation_functions.softmax, activation_functions.soft_max_prime))
 
     #training example
     training_vector = reshape_X(train_X[0])
@@ -54,11 +55,12 @@ def MNIST_forward_test():
 
 
 def MNIST_training_test():
-    #Create the Neural network
-    nn = Network(activation_functions.mse, activation_functions.mse_prime)
+   #Create the Neural network
+    nn = Network(activation_functions.cross_entropy, activation_functions.cross_entropy_prime)
     nn.addLayer(DenseLayer(784, 392, 1, activation_functions.tanh, activation_functions.tanh_prime))
     nn.addLayer(DenseLayer(392, 196, 2, activation_functions.tanh, activation_functions.tanh_prime))
-    nn.addLayer(DenseLayer(196, 10, 2, activation_functions.softmax, activation_functions.soft_max_prime))
+    nn.addLayer(General_dense_layer(196, 10, 2, activation_functions.softmax, activation_functions.soft_max_prime))
+
 
     #Shuffling the dataset and training across it for 1 epoch
     indices = list(range(len(train_X)))
