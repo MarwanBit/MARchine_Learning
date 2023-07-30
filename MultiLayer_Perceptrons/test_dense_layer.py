@@ -71,7 +71,7 @@ def neural_network_test_1():
         for i in range(len(X_xor)):
             training_vector, label_vector = X_xor[i], y_xor[i]
             nn.train(training_vector, label_vector)
-        if index % 100 == 0:
+        if index % 1000 == 0:
             print("Epoch: ", index)
             for k in range(len(X_xor)):
                 training_vector, label_vector = X_xor[k], y_xor[k]
