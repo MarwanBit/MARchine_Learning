@@ -5,6 +5,7 @@ import activation_functions
 from keras.datasets import mnist
 import random
 from general_dense_layer import General_dense_layer
+import time
 
 
 #Load the MNIST dataset 
@@ -54,7 +55,7 @@ def MNIST_forward_test():
     assert res.shape == (10, 1)
 
 
-def MNIST_training_test():
+def MNIST_training_test(epochs: int):
    #Create the Neural network
     nn = Network(activation_functions.cross_entropy, activation_functions.cross_entropy_prime)
     nn.addLayer(DenseLayer(784, 392, 1, activation_functions.tanh, activation_functions.tanh_prime))
@@ -63,29 +64,34 @@ def MNIST_training_test():
 
 
     #Shuffling the dataset and training across it for 1 epoch
-    indices = list(range(len(train_X)))
-    random.shuffle(indices)
-    for index in indices:
-        print("training on example: ", index)
-        training_vector = train_X[index]
-        label_vector = train_y[index]
-        #Process the data
-        training_vector = reshape_X(training_vector)
-        label_vector = one_hot_encoder(label_vector)
-        nn.train(training_vector, label_vector)
+    for i in range(epochs):
+        print("current epoch: ", i)
+        indices = list(range(len(train_X)))
+        random.shuffle(indices)
+        #This implements one_line_learning!
+        for progress, index in enumerate(indices):
+            training_vector = train_X[index]
+            label_vector = train_y[index]
+            #Process the data
+            training_vector = reshape_X(training_vector)
+            label_vector = one_hot_encoder(label_vector)
+            if progress % 2000 == 0:
+                print("training on example: ", progress, "out of ", len(train_X))
+            nn.train(training_vector, label_vector)
     print("\n\n\n\n\n\n")
     print("finished training!")
-    
+
     print("Beggining testing!")
     #Now let's test our neural network on some examples
-    for i in range(len(test_X)):
-        print("testing on example: ,", i)
-        training_vector = train_X[index]
-        label_vector = train_y[index]
+    #Change this to len(train_x) if you want to do it on the whole set
+    for i in range(2000):
+        training_vector = test_X[index]
+        label_vector = test_y[index]
         #Process the data
         training_vector = reshape_X(training_vector)
         label_vector = one_hot_encoder(label_vector)
         nn.evaluate(training_vector, label_vector)
+        time.sleep(2)
 
 
 
@@ -97,4 +103,4 @@ if __name__ == "__main__":
     print("MNIST_forward_test testing!")
     MNIST_forward_test()
     print("MNIST_training_test testing!")
-    MNIST_training_test()
+    MNIST_training_test(100)

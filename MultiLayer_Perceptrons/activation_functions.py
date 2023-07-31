@@ -31,7 +31,7 @@ def soft_max_prime(x):
     return jacobian_m
 
 # Cross Entropy function.
-def cross_entropy(y_pred, y_true):
+def cross_entropy(y_true, y_pred):
  
     # computing softmax values for predicted values
     y_pred = softmax(y_pred)
@@ -46,6 +46,7 @@ def cross_entropy(y_pred, y_true):
  
     return loss
 
-def cross_entropy_prime(y_pred, y_true):
-    vec = [[((-1)*y_pred[i][0] / y_true[i][0])] for i in range(len(y_pred))]
+def cross_entropy_prime(y_true, y_pred):
+    epsilon = 1e-5
+    vec = [[( ((-1)*y_true[i][0])  / (y_pred[i][0] + epsilon))] for i in range(len(y_pred))]
     return np.array(vec)
