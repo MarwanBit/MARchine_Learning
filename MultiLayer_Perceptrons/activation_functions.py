@@ -47,6 +47,6 @@ def cross_entropy(y_true, y_pred):
     return loss
 
 def cross_entropy_prime(y_true, y_pred):
-    epsilon = 1e-5
+    epsilon = 1e-10
     vec = [[( ((-1)*y_true[i][0])  / (y_pred[i][0] + epsilon))] for i in range(len(y_pred))]
     return np.array(vec)

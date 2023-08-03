@@ -74,6 +74,12 @@ class DenseLayer(BaseLayer):
         #updates the weights
         self.weights -= self.lr*weight_error
         self.bias -= self.lr* bias_error
+        print("weights error ", weight_error)
+        print(weight_error.shape)
+        print("input_error ", input_error)
+        print(input_error.shape)
+        print("bias error ", bias_error)
+        print(bias_error.shape)
         #Pass dE/dX as the de/DY for the next layer
         return input_error
     

@@ -19,4 +19,10 @@ class General_dense_layer(DenseLayer):
         input_error = np.matmul(output_error.T, np.matmul(self.activation_function_prime(self.local_field), self.weights))
         self.weights -= weight_error
         self.bias -= bias_error.T
+        print("weights error ", weight_error)
+        print(weight_error.shape)
+        print("input_error ", input_error)
+        print(input_error.shape)
+        print("bias error ", bias_error)
+        print(bias_error.shape)
         return input_error

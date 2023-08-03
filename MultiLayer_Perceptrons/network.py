@@ -43,6 +43,11 @@ class Network():
         '''
         loss = self.loss_func(label_vector, output)
         error = self.loss_func_prime(label_vector, output)
+        print("loss ", loss)
+        print(loss.shape)
+        print("error ", error)
+        print(error.shape)
+        print("\n\n\n\n\n")
         '''
         print("here's the loss after one pass:", loss)
         print("here's the loss error after one passs:", error)
@@ -53,6 +58,9 @@ class Network():
             print("Back propagation iteration:", i)
             '''
             error = layer.backpropagation(error)
+            print("error",  error)
+            print(error.shape)
+            print("\n\n\n\n\n")
 
         '''
         print("current error: ", error)
