@@ -1,9 +1,14 @@
+import os 
+import torch
+from torch import nn 
+from torch.utils.data import DataLoader
+from torchvision import datasets, transforms
+
 import numpy as np 
 from network import Network
 import activation_functions
 from layer import DenseLayer, BaseLayer
 from general_dense_layer import General_dense_layer
-import random
 
 #First let's construct the XOR Dataset 
 #This is for the XOR Problem which we will use for experimentation
@@ -30,23 +35,35 @@ def one_hot_encoder(label_vector):
         return np.array([[1], [0]])
     elif label_vector[0] == 1:
         return np.array([[0], [1]])
+
+device = (
+    "cuda"
+    if torch.cuda.is_available()
+    else "mps"
+    if torch.backends.mps.is_available()
+    else "cpu"
+)
+
+print(f"Using {device} device")
+
+
+class NeuralNetwork(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.flatten = nn.Flatten()
+        self.linear_relu_stack = nn.Sequential(
+            nn.Linear(2*1, 2),
+            nn.ReLU(),
+            nn.Linear(2*1, 2),
+            nn.Softmax(),
+        )
+
+    def forward(self, x):
+        x = self.flatten(x)
+        logits = self.linear_relu_stack(x)
+        return logits
     
-
-#Now let's construct our neural network
-nn = Network(activation_functions.cross_entropy, activation_functions.cross_entropy_prime)
-nn.addLayer(DenseLayer(2, 2, 1, activation_functions.relu, activation_functions.relu_prime))
-nn.addLayer(General_dense_layer(2, 2, 2, activation_functions.softmax, activation_functions.soft_max_prime))
-
-#Here we are going to test the forward layer
-for epoch in range(100,000):
-    indices = list(range(len(X_xor)))
-    random.shuffle(list(range(len(X_xor))))
-    for i in indices:
-        training_vector = X_xor[i]
-        label_vector = one_hot_encoder(y_xor[i])
-        nn.train(training_vector, label_vector)
-        if epoch % 20000 == 0:
-            nn.evaluate(training_vector, label_vector)
-    if epoch % 20000 == 0:
-        print("\n\n\n\n\n")
-
+network = NeuralNetwork()
+for i in range(len(X_xor)):
+    training_vector = X_xor[i]
+    print(network.forward(training_vector))
