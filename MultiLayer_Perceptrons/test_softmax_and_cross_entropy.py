@@ -35,18 +35,20 @@ def one_hot_encoder(label_vector):
 #Now let's construct our neural network
 nn = Network(activation_functions.cross_entropy, activation_functions.cross_entropy_prime)
 nn.addLayer(DenseLayer(2, 2, 1, activation_functions.relu, activation_functions.relu_prime))
-nn.addLayer(General_dense_layer(2, 2, 2, activation_functions.softmax, activation_functions.soft_max_prime))
+nn.addLayer(DenseLayer(2, 2, 2, activation_functions.relu, activation_functions.relu_prime ))
+nn.addLayer(General_dense_layer(2, 2, 3, activation_functions.softmax, activation_functions.soft_max_prime))
 
+print("what??")
 #Here we are going to test the forward layer
-for epoch in range(100,000):
+for epoch in range(10000):
     indices = list(range(len(X_xor)))
     random.shuffle(list(range(len(X_xor))))
     for i in indices:
         training_vector = X_xor[i]
         label_vector = one_hot_encoder(y_xor[i])
         nn.train(training_vector, label_vector)
-        if epoch % 20000 == 0:
+        if epoch % 1000 == 0:
             nn.evaluate(training_vector, label_vector)
-    if epoch % 20000 == 0:
+    if epoch % 1000 == 0:
         print("\n\n\n\n\n")
 
