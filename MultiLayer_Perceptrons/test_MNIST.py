@@ -84,7 +84,7 @@ def MNIST_training_test(epochs: int):
     print("Beggining testing!")
     #Now let's test our neural network on some examples
     #Change this to len(train_x) if you want to do it on the whole set
-    for i in range(len(test_X)):
+    for i in range(100):
         training_vector = test_X[i]
         label_vector = test_y[i]
         #Process the data
@@ -103,4 +103,4 @@ if __name__ == "__main__":
     print("MNIST_forward_test testing!")
     MNIST_forward_test()
     print("MNIST_training_test testing!")
-    MNIST_training_test(10)
+    MNIST_training_test(3)
